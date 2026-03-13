@@ -89,7 +89,7 @@ export function PhotoGallery() {
         {photos.map((photo, index) => (
           <button
             key={`${photo.folder}-${photo.file}`}
-            className={`group relative overflow-hidden rounded-sm cursor-pointer ${gridClasses(index)}`}
+            className={`group relative overflow-hidden rounded-sm cursor-pointer appearance-none border-0 bg-transparent p-0 text-left ${gridClasses(index)}`}
             onClick={() => setSelectedPhoto(index)}
             aria-label={`View ${photo.alt}`}
           >
@@ -138,14 +138,14 @@ export function PhotoGallery() {
           tabIndex={0}
         >
           <button
-            className="absolute top-6 right-6 text-background/80 hover:text-background transition-colors text-lg font-sans tracking-widest uppercase"
+            className="absolute top-6 right-6 appearance-none border-0 bg-transparent p-0 text-background/80 hover:text-background transition-colors text-lg font-sans tracking-widest uppercase"
             onClick={() => setSelectedPhoto(null)}
             aria-label="Close lightbox"
           >
             Close
           </button>
           <button
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-background/60 hover:text-background transition-colors"
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 appearance-none border-0 bg-transparent p-0 text-background/60 hover:text-background transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedPhoto(
@@ -166,7 +166,7 @@ export function PhotoGallery() {
             </svg>
           </button>
           <button
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-background/60 hover:text-background transition-colors"
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 appearance-none border-0 bg-transparent p-0 text-background/60 hover:text-background transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               setSelectedPhoto((selectedPhoto + 1) % photos.length);
