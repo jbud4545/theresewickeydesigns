@@ -1,0 +1,70 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), sans-serif;
+  --font-serif: var(--font-playfair), serif;
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.5rem;
+  /* Warm off-white base */
+  --background: oklch(0.97 0.005 80);
+  --foreground: oklch(0.18 0.02 60);
+  /* Card */
+  --card: oklch(0.99 0.003 80);
+  --card-foreground: oklch(0.18 0.02 60);
+  /* Popover */
+  --popover: oklch(0.99 0.003 80);
+  --popover-foreground: oklch(0.18 0.02 60);
+  /* Warm taupe primary */
+  --primary: oklch(0.42 0.04 60);
+  --primary-foreground: oklch(0.97 0.005 80);
+  /* Soft warm secondary */
+  --secondary: oklch(0.93 0.01 75);
+  --secondary-foreground: oklch(0.30 0.03 60);
+  /* Muted warm */
+  --muted: oklch(0.94 0.008 75);
+  --muted-foreground: oklch(0.52 0.02 60);
+  /* Accent - warm sage */
+  --accent: oklch(0.90 0.015 140);
+  --accent-foreground: oklch(0.25 0.03 60);
+  /* Border */
+  --border: oklch(0.88 0.01 75);
+  --input: oklch(0.88 0.01 75);
+  --ring: oklch(0.42 0.04 60);
+
+
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply relative bg-background text-foreground overscroll-none;
+  }
+}
