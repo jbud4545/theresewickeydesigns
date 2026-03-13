@@ -19,7 +19,7 @@ export function HeroSection() {
         </div>
         <div className="order-1 lg:order-2 relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-sm">
           <Image
-            src={bytescaleImage("8939sag_17.JPG", { w: 2400, f: "webp" }, "sagamore")}
+            src={bytescaleImage("8939sag_17.jpg", { w: 2400, f: "webp" }, "sagamore")}
             alt="Sagamore home exterior with mountain views"
             fill
             className="object-cover"

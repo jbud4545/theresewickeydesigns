@@ -48,13 +48,13 @@ export interface BytescaleImageOptions {
 /**
  * Build a Bytescale *image processing* URL.
  *
- * @param filename  e.g. "1-1.jpg" or "8939sag_03.JPG"
+ * @param filename  e.g. "1-1.jpg" or "8939sag_03.jpg"
  * @param opts      width, height, format, fit
  * @param folder    which project folder (defaults to "steamboat")
  *
  * @example
  *   bytescaleImage("1-1.jpg", { w: 800, f: "webp" })
- *   bytescaleImage("8939sag_03.JPG", { w: 800, f: "webp" }, "sagamore")
+ *   bytescaleImage("8939sag_03.jpg", { w: 800, f: "webp" }, "sagamore")
  */
 export function bytescaleImage(
   filename: string,
@@ -170,5 +170,5 @@ export const STEAMBOAT_VIDEO = "steambot-video.mp4";
 /** Every image file in the Bytescale sagamore folder */
 export const SAGAMORE_IMAGES = Array.from(
   { length: 17 },
-  (_, i) => `8939sag_${String(i + 1).padStart(2, "0")}.JPG`,
+  (_, i) => `8939sag_${String(i + 1).padStart(2, "0")}.jpg`,
 );
