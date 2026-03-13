@@ -21,7 +21,9 @@ export function BioSection() {
             personalities.
           </p>
           <p>
-            {'I\'ve designed three houses, each with a completely different style. My goal is always the same: I want you to walk into your home every day and fall in love with it all over again. Whether it\'s a family room, a kitchen, or a quiet corner, I want that space to make you feel at ease and truly happy.'}
+            {
+              "I've designed three houses, each with a completely different style. My goal is always the same: I want you to walk into your home every day and fall in love with it all over again. Whether it's a family room, a kitchen, or a quiet nook, I want that space to make you feel at ease and truly happy."
+            }
           </p>
         </div>
       </div>

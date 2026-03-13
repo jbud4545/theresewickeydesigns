@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { bytescaleImage } from "@/lib/bytescale";
 
 export function HeroSection() {
   return (
@@ -18,12 +19,13 @@ export function HeroSection() {
         </div>
         <div className="order-1 lg:order-2 relative aspect-[4/5] lg:aspect-[3/4] overflow-hidden rounded-sm">
           <Image
-            src="/images/gallery-1.jpg"
-            alt="Beautiful living room interior with warm earth tones"
+            src={bytescaleImage("8939sag_17.JPG", { w: 2400, f: "webp" }, "sagamore")}
+            alt="Sagamore home exterior with mountain views"
             fill
             className="object-cover"
             sizes="(min-width: 1024px) 50vw, 100vw"
             priority
+            unoptimized
           />
         </div>
       </div>
