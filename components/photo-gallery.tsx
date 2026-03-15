@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { bytescaleImage, type FolderKey } from "@/lib/bytescale";
 
 interface Photo {
@@ -80,11 +80,46 @@ function aspectClasses(index: number): string {
   return "aspect-square";
 }
 
+function thumbUrl(photo: Photo): string {
+  return bytescaleImage(photo.file, { w: 640, f: "webp", q: 75, fit: "shrink" }, photo.folder);
+}
+
+function lightboxUrl(photo: Photo): string {
+  return bytescaleImage(photo.file, { w: 1600, f: "webp", q: 85, fit: "shrink" }, photo.folder);
+}
+
 export function PhotoGallery() {
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
+  const [hiResLoaded, setHiResLoaded] = useState(false);
+
+  const adjacentUrls = useMemo(() => {
+    if (selectedPhoto === null) return [];
+    const offsets = [-2, -1, 1, 2];
+    return offsets.map((o) => {
+      const idx = (selectedPhoto + o + photos.length) % photos.length;
+      return lightboxUrl(photos[idx]);
+    });
+  }, [selectedPhoto]);
+
+  useEffect(() => {
+    setHiResLoaded(false);
+  }, [selectedPhoto]);
+
+  const onHiResLoad = useCallback(() => setHiResLoaded(true), []);
+
+  const lightboxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selectedPhoto !== null) {
+      lightboxRef.current?.focus();
+    }
+  }, [selectedPhoto]);
 
   return (
     <>
+      {adjacentUrls.map((url) => (
+        <link key={url} rel="preload" as="image" href={url} />
+      ))}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
         {photos.map((photo, index) => (
           <button
@@ -110,7 +145,7 @@ export function PhotoGallery() {
                     ? "(min-width: 1024px) 66vw, (min-width: 640px) 66vw, 100vw"
                     : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 }
-                priority={index < 3}
+                priority={index === 0}
               />
             </div>
           </button>
@@ -120,7 +155,8 @@ export function PhotoGallery() {
       {/* Lightbox — serve a large version (1920 px wide) for detail viewing */}
       {selectedPhoto !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/90 p-4 md:p-12"
+          ref={lightboxRef}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/90 p-4 md:p-12 outline-none"
           onClick={() => setSelectedPhoto(null)}
           onKeyDown={(e) => {
             if (e.key === "Escape") setSelectedPhoto(null);
@@ -190,19 +226,28 @@ export function PhotoGallery() {
             className="relative max-w-5xl w-full aspect-[3/2]"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Low-res thumbnail (already browser-cached from the grid) — shows instantly */}
             <Image
-              src={bytescaleImage(photos[selectedPhoto].file, {
-                w: 1600,
-                f: "webp",
-                q: 85,
-                fit: "shrink",
-              }, photos[selectedPhoto].folder)}
+              key={`thumb-${selectedPhoto}`}
+              src={thumbUrl(photos[selectedPhoto])}
               alt={photos[selectedPhoto].alt}
               fill
               unoptimized
               className="object-contain"
               sizes="90vw"
               priority
+            />
+            {/* High-res layer fades in on top once loaded */}
+            <Image
+              key={`hires-${selectedPhoto}`}
+              src={lightboxUrl(photos[selectedPhoto])}
+              alt=""
+              fill
+              unoptimized
+              className={`object-contain transition-opacity duration-300 ${hiResLoaded ? "opacity-100" : "opacity-0"}`}
+              sizes="90vw"
+              priority
+              onLoad={onHiResLoad}
             />
           </div>
           <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-background/60 text-sm font-sans">
