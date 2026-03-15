@@ -38,11 +38,18 @@ export interface BytescaleImageOptions {
   f?: "webp" | "avif" | "jpeg" | "png";
   /**
    * Resize fit mode:
-   *  - "crop"  – fill exact w×h, cropping edges as needed (good for thumbnails)
-   *  - "max"   – scale down to fit inside w×h, no cropping (default)
-   *  - "min"   – scale so shortest side matches w/h
+   *  - "crop"         – fill exact w×h, cropping edges as needed (good for thumbnails)
+   *  - "max"          – scale down to fit inside w×h, no cropping (default)
+   *  - "min"          – scale so shortest side matches w/h
+   *  - "shrink"       – shrink only; never enlarges images below the given dimensions
+   *  - "shrink-cover" – shrink only; covers dimensions without cropping
    */
-  fit?: "crop" | "max" | "min";
+  fit?: "crop" | "max" | "min" | "shrink" | "shrink-cover";
+  /**
+   * Output quality: 1 (lowest file size) – 100 (highest fidelity).
+   * ~75 is the recommended web default for WebP thumbnails.
+   */
+  q?: number;
 }
 
 /**
@@ -66,6 +73,7 @@ export function bytescaleImage(
   if (opts.h) params.set("h", String(opts.h));
   if (opts.f) params.set("f", opts.f);
   if (opts.fit) params.set("fit", opts.fit);
+  if (opts.q) params.set("q", String(opts.q));
 
   const qs = params.toString();
   return `${BASE}/image/${FOLDERS[folder]}/${filename}${qs ? `?${qs}` : ""}`;

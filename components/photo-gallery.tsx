@@ -49,18 +49,18 @@ const photos: Photo[] = [
 
 /**
  * Pick an optimal thumbnail width based on grid position.
- * Widths are 2x the max CSS rendered size to stay sharp on Retina/HiDPI.
+ * Sized for "good enough" quality without over-fetching:
  *
- *   0  → 2-col + 2-row hero tile  (≈66 vw ≈ 900px CSS)  → 1920 px
- *   7  → 2-col wide tile          (≈66 vw ≈ 900px CSS)  → 1920 px
- *   rest → single col             (≈33 vw ≈ 460px CSS)  → 1024 px
+ *   0  → 2-col + 2-row hero tile  (≈66 vw, max ~924px CSS)  → 1200 px
+ *   7  → 2-col wide tile          (≈66 vw, max ~924px CSS)  → 1200 px
+ *   rest → single col             (≈33 vw, max ~462px CSS)  →  640 px
  *
  * For items beyond the first 9 we use the same pattern modulo 9.
  */
 function thumbWidth(index: number): number {
   const pos = index % 9;
-  if (pos === 0 || pos === 7) return 1920;
-  return 1024;
+  if (pos === 0 || pos === 7) return 1200;
+  return 640;
 }
 
 /**
@@ -98,13 +98,15 @@ export function PhotoGallery() {
                 src={bytescaleImage(photo.file, {
                   w: thumbWidth(index),
                   f: "webp",
+                  q: 75,
+                  fit: "shrink",
                 }, photo.folder)}
                 alt={photo.alt}
                 fill
                 unoptimized
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 sizes={
-                  thumbWidth(index) === 1024
+                  thumbWidth(index) === 1200
                     ? "(min-width: 1024px) 66vw, (min-width: 640px) 66vw, 100vw"
                     : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 }
@@ -190,8 +192,10 @@ export function PhotoGallery() {
           >
             <Image
               src={bytescaleImage(photos[selectedPhoto].file, {
-                w: 2560,
+                w: 1600,
                 f: "webp",
+                q: 85,
+                fit: "shrink",
               }, photos[selectedPhoto].folder)}
               alt={photos[selectedPhoto].alt}
               fill
